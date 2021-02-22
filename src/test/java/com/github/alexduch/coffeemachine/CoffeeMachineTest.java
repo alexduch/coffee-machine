@@ -8,27 +8,29 @@ import org.junit.jupiter.api.Test;
 
 class CoffeeMachineTest {
 
+	private static final double ONE_EURO = 1;
+
 	private final CoffeeMachine coffeeMachine = new CoffeeMachine();
 
 	@Test
 	void shouldTranslateDrinkType() {
-		assertEquals("T::", coffeeMachine.translate(new Order(Drink.TEA)));
-		assertEquals("C::", coffeeMachine.translate(new Order(Drink.COFFEE)));
-		assertEquals("H::", coffeeMachine.translate(new Order(Drink.CHOCOLATE)));
+		assertEquals("T::", coffeeMachine.buy(new Order(Drink.TEA, ONE_EURO)));
+		assertEquals("C::", coffeeMachine.buy(new Order(Drink.COFFEE, ONE_EURO)));
+		assertEquals("H::", coffeeMachine.buy(new Order(Drink.CHOCOLATE, ONE_EURO)));
 	}
 
 	@Test
 	void shouldAddOneSugarAndAStick() {
-		assertEquals("T:1:0", coffeeMachine.translate(new Order(Drink.TEA, Sugar.ONE)));
-		assertEquals("C:1:0", coffeeMachine.translate(new Order(Drink.COFFEE, Sugar.ONE)));
-		assertEquals("H:1:0", coffeeMachine.translate(new Order(Drink.CHOCOLATE, Sugar.ONE)));
+		assertEquals("T:1:0", coffeeMachine.buy(new Order(Drink.TEA, Sugar.ONE, ONE_EURO)));
+		assertEquals("C:1:0", coffeeMachine.buy(new Order(Drink.COFFEE, Sugar.ONE, ONE_EURO)));
+		assertEquals("H:1:0", coffeeMachine.buy(new Order(Drink.CHOCOLATE, Sugar.ONE, ONE_EURO)));
 	}
 
 	@Test
 	void shouldAddTwoSugarsAndAStick() {
-		assertEquals("T:2:0", coffeeMachine.translate(new Order(Drink.TEA, Sugar.TWO)));
-		assertEquals("C:2:0", coffeeMachine.translate(new Order(Drink.COFFEE, Sugar.TWO)));
-		assertEquals("H:2:0", coffeeMachine.translate(new Order(Drink.CHOCOLATE, Sugar.TWO)));
+		assertEquals("T:2:0", coffeeMachine.buy(new Order(Drink.TEA, Sugar.TWO, ONE_EURO)));
+		assertEquals("C:2:0", coffeeMachine.buy(new Order(Drink.COFFEE, Sugar.TWO, ONE_EURO)));
+		assertEquals("H:2:0", coffeeMachine.buy(new Order(Drink.CHOCOLATE, Sugar.TWO, ONE_EURO)));
 	}
 
 }

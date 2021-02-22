@@ -4,7 +4,7 @@ import com.github.alexduch.coffeemachine.drinkmaker.MakeDrinkCommand;
 
 public class CoffeeMachine {
 
-  public String translate(Order order) {
+  public String buy(Order order) {
     return new MakeDrinkCommand(order.drink, order.sugar).toString();
   }
 }
