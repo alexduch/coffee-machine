@@ -17,6 +17,7 @@ class CoffeeMachineTest {
 		assertEquals("T::", coffeeMachine.buy(new Order(Drink.TEA, ONE_EURO)));
 		assertEquals("C::", coffeeMachine.buy(new Order(Drink.COFFEE, ONE_EURO)));
 		assertEquals("H::", coffeeMachine.buy(new Order(Drink.CHOCOLATE, ONE_EURO)));
+		assertEquals("O::", coffeeMachine.buy(new Order(Drink.ORANGE_JUICE, ONE_EURO)));
 	}
 
 	@Test
@@ -34,10 +35,17 @@ class CoffeeMachineTest {
 	}
 
 	@Test
+	void shouldIgnoreSugarForColdDrinks() {
+		assertEquals("O::", coffeeMachine.buy(new Order(Drink.ORANGE_JUICE, Sugar.ONE, ONE_EURO)));
+		assertEquals("O::", coffeeMachine.buy(new Order(Drink.ORANGE_JUICE, Sugar.TWO, ONE_EURO)));
+	}
+
+	@Test
 	void shouldNotPrepareDrinkAndDisplayAMessage() {
 		assertEquals("M:missing 0,20 €", coffeeMachine.buy(new Order(Drink.TEA, Sugar.TWO, 0.2)));
 		assertEquals("M:missing 0,05 €", coffeeMachine.buy(new Order(Drink.COFFEE, Sugar.TWO, 0.55)));
 		assertEquals("M:missing 0,33 €", coffeeMachine.buy(new Order(Drink.CHOCOLATE, Sugar.TWO, 0.17)));
+		assertEquals("M:missing 0,48 €", coffeeMachine.buy(new Order(Drink.ORANGE_JUICE, Sugar.TWO, 0.12)));
 	}
 
 }

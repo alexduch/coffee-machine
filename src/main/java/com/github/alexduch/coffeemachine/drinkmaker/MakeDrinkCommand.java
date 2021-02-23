@@ -9,7 +9,7 @@ public class MakeDrinkCommand extends AbstractDrinkMakerCommand {
 
   public MakeDrinkCommand(Drink drink, Sugar sugar) {
     super(drink.id);
-    this.sugar = sugar.ordinal();
+    this.sugar = drink.isHotDrink ? sugar.ordinal() : 0;
   }
 
   @Override
