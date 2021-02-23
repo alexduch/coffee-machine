@@ -33,4 +33,11 @@ class CoffeeMachineTest {
 		assertEquals("H:2:0", coffeeMachine.buy(new Order(Drink.CHOCOLATE, Sugar.TWO, ONE_EURO)));
 	}
 
+	@Test
+	void shouldNotPrepareDrinkAndDisplayAMessage() {
+		assertEquals("M:missing 0,20 €", coffeeMachine.buy(new Order(Drink.TEA, Sugar.TWO, 0.2)));
+		assertEquals("M:missing 0,05 €", coffeeMachine.buy(new Order(Drink.COFFEE, Sugar.TWO, 0.55)));
+		assertEquals("M:missing 0,33 €", coffeeMachine.buy(new Order(Drink.CHOCOLATE, Sugar.TWO, 0.17)));
+	}
+
 }
