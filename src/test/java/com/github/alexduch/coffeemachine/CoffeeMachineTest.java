@@ -4,13 +4,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.github.alexduch.coffeemachine.Order.Drink;
 import com.github.alexduch.coffeemachine.Order.Sugar;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class CoffeeMachineTest {
 
 	private static final double ONE_EURO = 1;
 
-	private final CoffeeMachine coffeeMachine = new CoffeeMachine();
+	private CoffeeMachine coffeeMachine;
+
+	@BeforeEach
+	void installCoffeeMachine() {
+		coffeeMachine = new CoffeeMachine();
+	}
 
 	@Test
 	void shouldTranslateDrinkType() {
@@ -58,6 +64,28 @@ class CoffeeMachineTest {
 		assertEquals("M:missing 0,05 €", coffeeMachine.buy(new Order(Drink.COFFEE, Sugar.TWO, 0.55)));
 		assertEquals("M:missing 0,33 €", coffeeMachine.buy(new Order(Drink.CHOCOLATE, Sugar.TWO, 0.17)));
 		assertEquals("M:missing 0,48 €", coffeeMachine.buy(new Order(Drink.ORANGE_JUICE, Sugar.TWO, 0.12)));
+	}
+
+	@Test
+	void shouldRegisterSalesAndReport() {
+		assertEquals("H:2:0", coffeeMachine.buy(new Order(Drink.CHOCOLATE, Sugar.TWO, ONE_EURO)));
+		assertEquals("T:1:0", coffeeMachine.buy(new Order(Drink.TEA, Sugar.ONE, ONE_EURO)));
+		assertEquals("H:2:0", coffeeMachine.buy(new Order(Drink.CHOCOLATE, Sugar.TWO, ONE_EURO)));
+		assertEquals("Ch:1:0", coffeeMachine.buy(new Order(Drink.COFFEE, Sugar.ONE, true, ONE_EURO)));
+		assertEquals("O::", coffeeMachine.buy(new Order(Drink.ORANGE_JUICE, Sugar.TWO, ONE_EURO)));
+		assertEquals("O::", coffeeMachine.buy(new Order(Drink.ORANGE_JUICE, Sugar.ONE, true, ONE_EURO)));
+		assertEquals("M:missing 0,33 €", coffeeMachine.buy(new Order(Drink.CHOCOLATE, Sugar.TWO, 0.17)));
+
+		coffeeMachine.printSalesReport();
+
+    assertEquals(
+        "Amount of money earned: 3,20€\n"
+            + "Drinks sold:\n"
+            + "Tea: \t1\n"
+						+ "Coffee: \t1\n"
+						+ "Chocolate: \t2\n"
+						+ "Orange juice: \t2\n",
+        coffeeMachine.stats.report());
 	}
 
 }

@@ -23,21 +23,23 @@ public class Order {
   }
 
   public enum Drink {
-    TEA("T", 0.4),
-    COFFEE("C", 0.6),
-    CHOCOLATE("H", 0.5),
-    ORANGE_JUICE("O", 0.6, false);
+    TEA("T", "Tea", 0.4),
+    COFFEE("C", "Coffee", 0.6),
+    CHOCOLATE("H", "Chocolate", 0.5),
+    ORANGE_JUICE("O", "Orange juice", 0.6, false);
 
     public final String id;
+    public final String displayName;
     public final double price;
     public final boolean isHotDrink;
 
-    Drink(String id, double price) {
-      this(id, price, true);
+    Drink(String id, String displayName, double price) {
+      this(id, displayName, price, true);
     }
 
-    Drink(String id, double price, boolean isHotDrink) {
+    Drink(String id, String displayName, double price, boolean isHotDrink) {
       this.id = id;
+      this.displayName = displayName;
       this.price = price;
       this.isHotDrink = isHotDrink;
     }
