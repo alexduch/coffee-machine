@@ -1,22 +1,36 @@
 package com.github.alexduch.coffeemachine;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 import com.github.alexduch.coffeemachine.Order.Drink;
 import com.github.alexduch.coffeemachine.Order.Sugar;
-import org.junit.jupiter.api.BeforeEach;
+import com.github.alexduch.coffeemachine.services.BeverageQuantityChecker;
+import com.github.alexduch.coffeemachine.services.EmailNotifier;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class CoffeeMachineTest {
 
 	private static final double ONE_EURO = 1;
 
+	@InjectMocks
 	private CoffeeMachine coffeeMachine;
 
-	@BeforeEach
-	void installCoffeeMachine() {
-		coffeeMachine = new CoffeeMachine();
-	}
+	@Mock
+	private BeverageQuantityChecker beverageQuantityChecker;
+
+	@Mock
+	private EmailNotifier emailNotifier;
 
 	@Test
 	void shouldTranslateDrinkType() {
@@ -86,6 +100,38 @@ class CoffeeMachineTest {
 						+ "Chocolate: \t2\n"
 						+ "Orange juice: \t2\n",
         coffeeMachine.stats.report());
+	}
+
+	@Test
+	void shouldCheckForMissingIngredients() {
+		assertEquals("T::", coffeeMachine.buy(new Order(Drink.TEA, ONE_EURO)));
+		assertEquals("C::", coffeeMachine.buy(new Order(Drink.COFFEE, ONE_EURO)));
+		assertEquals("H::", coffeeMachine.buy(new Order(Drink.CHOCOLATE, ONE_EURO)));
+		assertEquals("O::", coffeeMachine.buy(new Order(Drink.ORANGE_JUICE, ONE_EURO)));
+
+		verify(beverageQuantityChecker, times(2)).isEmpty("water");
+		verify(beverageQuantityChecker, times(1)).isEmpty("milk");
+		verifyNoMoreInteractions(beverageQuantityChecker);
+
+		verifyNoInteractions(emailNotifier);
+	}
+
+	@Test
+	void shouldReportMissingIngredients() {
+		when(beverageQuantityChecker.isEmpty(anyString())).thenReturn(true);
+
+		assertEquals("M:Sorry, there is a shortage of water. The company has been notified.",
+				coffeeMachine.buy(new Order(Drink.TEA, ONE_EURO)));
+		assertEquals("M:Sorry, there is a shortage of water. The company has been notified.",
+				coffeeMachine.buy(new Order(Drink.COFFEE, ONE_EURO)));
+		assertEquals("M:Sorry, there is a shortage of milk. The company has been notified.",
+				coffeeMachine.buy(new Order(Drink.CHOCOLATE, ONE_EURO)));
+		assertEquals("O::", coffeeMachine.buy(new Order(Drink.ORANGE_JUICE, ONE_EURO)));
+
+		verify(emailNotifier, times(2)).notifyMissingDrink("water");
+		verify(emailNotifier, times(1)).notifyMissingDrink("milk");
+		verifyNoMoreInteractions(emailNotifier);
+
 	}
 
 }

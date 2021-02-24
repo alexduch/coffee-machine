@@ -23,25 +23,28 @@ public class Order {
   }
 
   public enum Drink {
-    TEA("T", "Tea", 0.4),
-    COFFEE("C", "Coffee", 0.6),
-    CHOCOLATE("H", "Chocolate", 0.5),
+    TEA("T", "Tea", 0.4, "water"),
+    COFFEE("C", "Coffee", 0.6, "water"),
+    CHOCOLATE("H", "Chocolate", 0.5, "milk"),
     ORANGE_JUICE("O", "Orange juice", 0.6, false);
 
     public final String id;
     public final String displayName;
     public final double price;
     public final boolean isHotDrink;
+    public final String[] ingredients;
 
-    Drink(String id, String displayName, double price) {
-      this(id, displayName, price, true);
+    Drink(String id, String displayName, double price, String... ingredients) {
+      this(id, displayName, price, true, ingredients);
     }
 
-    Drink(String id, String displayName, double price, boolean isHotDrink) {
+    Drink(String id, String displayName, double price, boolean isHotDrink,
+        String... ingredients) {
       this.id = id;
       this.displayName = displayName;
       this.price = price;
       this.isHotDrink = isHotDrink;
+      this.ingredients = ingredients;
     }
   }
 
