@@ -4,6 +4,7 @@ public class Order {
 
   public final Drink drink;
   public final Sugar sugar;
+  public final boolean extraHot;
   public final double moneyInserted;
 
   public Order(Drink drink, double moneyInserted) {
@@ -11,8 +12,13 @@ public class Order {
   }
 
   public Order(Drink drink, Sugar sugar, double moneyInserted) {
+    this(drink, sugar, false, moneyInserted);
+  }
+
+  public Order(Drink drink, Sugar sugar, boolean extraHot, double moneyInserted) {
     this.drink = drink;
     this.sugar = sugar;
+    this.extraHot = extraHot;
     this.moneyInserted = moneyInserted;
   }
 

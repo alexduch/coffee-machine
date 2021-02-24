@@ -35,9 +35,21 @@ class CoffeeMachineTest {
 	}
 
 	@Test
+	void shouldBeExtraHot() {
+		assertEquals("Th::", coffeeMachine.buy(new Order(Drink.TEA, Sugar.NONE, true, ONE_EURO)));
+		assertEquals("Ch:1:0", coffeeMachine.buy(new Order(Drink.COFFEE, Sugar.ONE, true, ONE_EURO)));
+		assertEquals("Hh:2:0", coffeeMachine.buy(new Order(Drink.CHOCOLATE, Sugar.TWO, true, ONE_EURO)));
+	}
+
+	@Test
 	void shouldIgnoreSugarForColdDrinks() {
 		assertEquals("O::", coffeeMachine.buy(new Order(Drink.ORANGE_JUICE, Sugar.ONE, ONE_EURO)));
 		assertEquals("O::", coffeeMachine.buy(new Order(Drink.ORANGE_JUICE, Sugar.TWO, ONE_EURO)));
+	}
+
+	@Test
+	void shouldIgnoreExtraHotForColdDrinks() {
+		assertEquals("O::", coffeeMachine.buy(new Order(Drink.ORANGE_JUICE, Sugar.ONE, true, ONE_EURO)));
 	}
 
 	@Test

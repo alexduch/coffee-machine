@@ -3,12 +3,12 @@ package com.github.alexduch.coffeemachine.drinkmaker;
 import com.github.alexduch.coffeemachine.Order.Drink;
 import com.github.alexduch.coffeemachine.Order.Sugar;
 
-public class MakeDrinkCommand extends AbstractDrinkMakerCommand {
+public class MakeHotDrinkCommand extends AbstractDrinkMakerCommand {
 
   public final int sugar;
 
-  public MakeDrinkCommand(Drink drink, Sugar sugar) {
-    super(drink.id);
+  MakeHotDrinkCommand(Drink drink, Sugar sugar, boolean extraHot) {
+    super(drink.id + (extraHot ? "h": ""));
     this.sugar = drink.isHotDrink ? sugar.ordinal() : 0;
   }
 
